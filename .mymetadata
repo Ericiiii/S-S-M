@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="Spring-MaBatis-Oracle-JQuery-SpringMVC"
+  id="myeclipse.1467706781629"
+  context-root="/Spring-MaBatis-Oracle-JQuery-SpringMVC"
+  j2ee-spec="5.0"
+  archive="Spring-MaBatis-Oracle-JQuery-SpringMVC.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

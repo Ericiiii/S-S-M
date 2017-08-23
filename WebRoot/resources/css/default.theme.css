@@ -1,0 +1,11 @@
+@charset "utf-8";
+/* default theme style
+----------------------------------*/
+@import "jquery.basic.css";
+@import "jquery.autocomplete.css";
+@import "jquery.datepicker.css";
+@import "jquery.ztree.css";
+@import "jquery.flexigrid.css";
+@import "jquery.pagination.css";
+@import "jquery.validate.css";
+@import "jquery.dialog.css";

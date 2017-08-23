@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+	<!-- 配置多资源文件,多个文件用逗号[xxx.properties,xxx.properties]分离 -->
+	<context:property-placeholder location="classpath:db.properties" />
+    
+      <!--   扫描全包 ,除了controller控制层 -->
+ 
+	  <context:component-scan base-package="com.lxit">
+			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	  </context:component-scan>
+
+	<!-- 连接数据源的资源配置文件（连接地址、用户、密码、大小等） -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>${datasource.driver}</value>
+		</property>
+		<property name="url">
+			<value>${datasource.url}</value>
+		</property>
+		<property name="username">
+			<value>${datasource.username}</value>
+		</property>
+		<property name="password">
+			<value>${datasource.password}</value>
+		</property>
+
+		<!-- DBCP的连接池的属性配置 -->
+		<property name="initialSize">
+			<value>${dbcp.initialSize}</value>
+		</property>
+		<property name="maxActive">
+			<value>${dbcp.maxActive}</value>
+		</property>
+		<property name="minIdle">
+			<value>${dbcp.minIdle}</value>
+		</property>
+		<property name="maxIdle">
+			<value>${dbcp.maxIdle}</value>
+		</property>
+		<property name="defaultAutoCommit">
+			<value>${dbcp.defaultAutoCommit}</value>
+		</property>
+		<property name="validationQuery">
+			<value>${dbcp.validationQuery}</value>
+		</property>
+	</bean>
+	
+	<!-- 配置MyBatis3实例工厂，进行sql资源配置文件映射 -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- set方法注入 -->
+		<property name="configLocation" value="classpath:mybatis-context.xml" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:com/lxit/bean/*.xml" />
+	</bean>
+	
+	<!-- 配置MyBatis3数据库操作模板，进行sql配置操作数据库 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<!-- 构造方法注入 -->
+		<constructor-arg index="0" ref="sessionFactory" />
+	</bean>
+	
+	<!-- 事务管理器, 使用jdbc的事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	
+<!-- 	
+	 StuDaoImpl 注入实例
+	<bean id="stuDao"  class="com.lxit.dao.impl.StuDaoImpl">
+	 <property name="sqlSessionTemplate"  ref="sqlSessionTemplate"></property>
+	</bean>
+
+	<bean id="service" class="com.lxit.service.StuService">
+	   <property name="stuDao" ref="stuDao"></property>
+	</bean>
+
+ -->
+
+  
+</beans>
